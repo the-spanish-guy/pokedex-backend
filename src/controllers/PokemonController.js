@@ -70,7 +70,7 @@ module.exports = {
         weakness,
       },
       training: {
-        ctach_rate: capture_rate,
+        catch_rate: capture_rate,
         base_friendship: base_happiness,
         growth_rate: growth_rate.name,
         base_exp: base_experience,
