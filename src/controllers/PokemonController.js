@@ -37,8 +37,8 @@ module.exports = {
     const female = await getGenderList(2);
     const unknow = await getGenderList(3);
     const weakness = getVulnarability(types);
-    const { base_happiness, capture_rate, growth_rate, egg_groups } = await getSpecie(id);
-    const evolutions = await getEvolutions(id)
+    const { base_happiness, capture_rate, growth_rate, egg_groups, evolution_chain } = await getSpecie(id);
+    const evolutions = await getEvolutions(evolution_chain)
     let evolves;
     if(evolutions) {
       evolves = getEvolves(evolutions)

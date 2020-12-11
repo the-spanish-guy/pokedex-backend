@@ -60,13 +60,13 @@ const getEggGroups = async (nameorId ) => {
   };
 };
 
-const getEvolutions = async (id) => {
-  const res = await api.get(`https://pokeapi.co/api/v2/evolution-chain/${id}/`).catch((e) => {
+const getEvolutions = async (evolution_chain) => {
+  const url = evolution_chain.url.split("api/v2");
+  const res = await api.get(url[1]).catch((e) => {
     if(e.response.status) {
       return '';
     }
     console.log("[ERROR] error while get list of pokemons ", e);
-    console.log("[ERROR] error while get list of pokemons ", e.response.status);
   })
   return res.data !== '' ? res.data : null;
 }

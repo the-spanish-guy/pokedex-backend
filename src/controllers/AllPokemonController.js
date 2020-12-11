@@ -1,6 +1,6 @@
 const parsePokemon = require('../core/parse/parseAllPokemon');
-const { getAllPokemons, getSpecificPokemon, getImagePokemon } = require('../services/api');
-const { getColor } = require('../utils/utils');
+const { getAllPokemons, getSpecificPokemon, getImagePokemon, getSpecie } = require('../services/api');
+const { getColor, getInfo } = require('../utils/utils');
 
 module.exports = {
   async index(req, res) {
@@ -10,6 +10,8 @@ module.exports = {
       const pokemon = await getSpecificPokemon(idOrName);
       const img = pokemon.sprites.other["official-artwork"].front_default;
       const type = getColor(pokemon.types[0].type.name);
+      const { flavor_text_entries } = await getSpecie(pokemon.id);
+      const info = getInfo(flavor_text_entries)
 
       const arr = [{
         id: pokemon.id,
@@ -18,6 +20,7 @@ module.exports = {
         svg: pokemon.sprites.other.dream_world.front_default,
         color: type,
         types: pokemon.types,
+        info,
         all: pokemon,
       }]
 
@@ -29,6 +32,8 @@ module.exports = {
       const pokemon = await getSpecificPokemon(name);
       const img = pokemon.sprites.other["official-artwork"].front_default;
       const type = getColor(pokemon.types[0].type.name);
+      const { flavor_text_entries } = await getSpecie(pokemon.id);
+      const info = getInfo(flavor_text_entries)
 
       return {
         id: pokemon.id,
@@ -37,6 +42,7 @@ module.exports = {
         svg: pokemon.sprites.other.dream_world.front_default,
         color: type,
         types: pokemon.types,
+        info,
         all: pokemon,
       }
     })

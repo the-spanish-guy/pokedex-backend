@@ -404,6 +404,14 @@ const getEvolves = (data) => {
   return result;
 }
 
+const getInfo = arr => {
+  const description = arr
+    .filter((desc) => desc.language.name === "en")
+    .sort((a, b) => a.version.url - b.version.url)
+    .slice(-1);
+  return description[0].flavor_text;
+}
+
 module.exports = {
   getColor,
   formatNumber,
@@ -414,5 +422,6 @@ module.exports = {
   getVulnarability,
   hasEggGroup,
   getEggGroupsFromated,
-  getEvolves
+  getEvolves,
+  getInfo
 };
