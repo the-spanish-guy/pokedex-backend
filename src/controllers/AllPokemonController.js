@@ -6,11 +6,20 @@ module.exports = {
   async index(req, res) {
     const { idOrName } = req.params;
     const data = [];
+    const re = new RegExp("-")
+    const resRegex = re.exec(idOrName)
+    let formatedName = idOrName;
+    if(resRegex) {
+      const [newName] = idOrName.split("-")
+      formatedName = newName
+    }
     if(idOrName) {
       const pokemon = await getSpecificPokemon(idOrName);
       const img = pokemon.sprites.other["official-artwork"].front_default;
       const type = getColor(pokemon.types[0].type.name);
-      const { flavor_text_entries } = await getSpecie(pokemon.id);
+      console.log(formatedName)
+      const { flavor_text_entries } = await getSpecie(formatedName);
+      console.log("teste")
       const info = getInfo(flavor_text_entries)
 
       const arr = [{

@@ -31,13 +31,22 @@ module.exports = {
       base_experience,
       stats,
     } = await getSpecificPokemon(id);
-    const category = await getCategory(id);
-    const other_forms = await getVariant(id);
+    const re = new RegExp("-")
+    const resRegex = re.exec(name)
+    let formatedName = id;
+    if(resRegex) {
+      const [newName] = name.split("-")
+      formatedName = newName
+    }
+    console.log("aqui")
+    console.log(formatedName)
+    const category = await getCategory(formatedName);
+    const other_forms = await getVariant(formatedName);
     const male = await getGenderList(1);
     const female = await getGenderList(2);
     const unknow = await getGenderList(3);
     const weakness = getVulnarability(types);
-    const { base_happiness, capture_rate, growth_rate, egg_groups, evolution_chain } = await getSpecie(id);
+    const { base_happiness, capture_rate, growth_rate, egg_groups, evolution_chain } = await getSpecie(formatedName);
     const evolutions = await getEvolutions(evolution_chain)
     let evolves;
     if(evolutions) {
