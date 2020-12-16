@@ -1,4 +1,3 @@
-const parsePokemon = require("../core/parse/parseAllPokemon");
 const {
   getSpecificPokemon,
   getCategory,
