@@ -1,4 +1,3 @@
-const parsePokemon = require('../core/parse/parseAllPokemon');
 const { getAllPokemons, getSpecificPokemon, getImagePokemon, getSpecie } = require('../services/api');
 const { getColor, getInfo } = require('../utils/utils');
 
