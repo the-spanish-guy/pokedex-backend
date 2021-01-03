@@ -14,7 +14,9 @@ const {
   hasEggGroup,
   getEggGroupsFromated,
   getEvolves,
-  capitalize
+  capitalize,
+  getGenderRate,
+  getCatchRate
 } = require("../utils/utils");
 
 module.exports = {
@@ -45,7 +47,7 @@ module.exports = {
     const female = await getGenderList(2);
     const unknow = await getGenderList(3);
     const weakness = getVulnarability(types);
-    const { base_happiness, capture_rate, growth_rate, egg_groups, evolution_chain } = await getSpecie(formatedName);
+    const { base_happiness, capture_rate, growth_rate, egg_groups, evolution_chain, gender_rate } = await getSpecie(formatedName);
     const evolutions = await getEvolutions(evolution_chain)
     let evolves;
     if(evolutions) {
@@ -78,7 +80,7 @@ module.exports = {
         weakness,
       },
       training: {
-        catch_rate: capture_rate,
+        catch_rate: getCatchRate(capture_rate),
         base_friendship: base_happiness,
         growth_rate: growth_rate.name,
         base_exp: base_experience,
@@ -86,6 +88,7 @@ module.exports = {
       },
       breeding: {
         egg_groups: egg_groups[0].name === 'no-eggs' ? ['Undiscovered'] : egg_groups,
+        gender_rate: getGenderRate(gender_rate)
       },
       base_stats: stats,
       type: getVulnarability(types, true),

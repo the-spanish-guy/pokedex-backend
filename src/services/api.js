@@ -9,7 +9,7 @@ const getAllPokemons = async () => {
     const res = await api.get("/pokemon");
     return res.data;
   } catch (error) {
-    console.log("[ERROR] error while get list of pokemons ", erorr);
+    console.log("[ERROR] error while get list of pokemons ", error);
   }
 };
 

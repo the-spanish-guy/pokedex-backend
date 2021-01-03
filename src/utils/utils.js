@@ -172,22 +172,32 @@ const formatNumber = (number) => {
   }
 };
 
+const hectogramsToLbs = (n) => {
+  return Math.round((n * 0.220462) * 100) / 100
+}
+
 const hectogramsToKilograms = (n) => {
-  return (n/10);
+  return Math.round((n/10) * 100) / 100;
+}
+
+const decimetresToFeet = (n) => {
+  return Math.round((n * 0.328084) * 100) / 100;
 }
 
 const decimetresToMeters = (n) => {
-  return (n/10);
+  return Math.round((n/10) * 100) / 100;
 }
 
 const formatHeight = (number) => {
   const m = decimetresToMeters(number);
-  return `${m} m`;
+  const f = decimetresToFeet(number);
+  return `${m} m. (${f} ft.)`;
 };
 
 const formatWeight = (number) => {
   const kg = hectogramsToKilograms(number);
-  return `${kg} kg`;
+  const lbs = hectogramsToLbs(number);
+  return `${kg} kg (${lbs} lbs)`;
 };
 
 const getEffectiveByType = (type) => {
@@ -395,6 +405,24 @@ const getInfo = arr => {
   return description[0].flavor_text;
 }
 
+/**
+ * Gender Ratio
+ * 1 = 8 then (100/8) = 12.5
+ */
+const getGenderRate = (gender_rate) => {
+  if(gender_rate === -1 ) return ['Genderless'];
+
+  const genderRatioFemale = 12.5 * gender_rate;
+  const genderRatioMale = 12.5 * (8 - gender_rate);
+
+  return [genderRatioMale, genderRatioFemale]
+}
+
+const getCatchRate = capture_rate => {
+  const rate = Math.round((100 / 255) * capture_rate)
+  return `${capture_rate} (${rate}%, full HP)`
+}
+
 module.exports = {
   getColor,
   formatNumber,
@@ -406,5 +434,7 @@ module.exports = {
   hasEggGroup,
   getEggGroupsFromated,
   getEvolves,
-  getInfo
+  getInfo,
+  getGenderRate,
+  getCatchRate
 };
