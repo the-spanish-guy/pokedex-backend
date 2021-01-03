@@ -173,20 +173,20 @@ const formatNumber = (number) => {
 };
 
 const hectogramsToLbs = (n) => {
-  return Math.round((n * 0.220462) * 100) / 100
-}
+  return Math.round(n * 0.220462 * 100) / 100;
+};
 
 const hectogramsToKilograms = (n) => {
-  return Math.round((n/10) * 100) / 100;
-}
+  return Math.round((n / 10) * 100) / 100;
+};
 
 const decimetresToFeet = (n) => {
-  return Math.round((n * 0.328084) * 100) / 100;
-}
+  return Math.round(n * 0.328084 * 100) / 100;
+};
 
 const decimetresToMeters = (n) => {
-  return Math.round((n/10) * 100) / 100;
-}
+  return Math.round((n / 10) * 100) / 100;
+};
 
 const formatHeight = (number) => {
   const m = decimetresToMeters(number);
@@ -310,7 +310,7 @@ const getEffectiveByType = (type) => {
   }
 };
 
-const getVulnarability = (type ,returnAll = null) => {
+const getVulnarability = (type, returnAll = null) => {
   let vulnerabilidade = [],
     resistencia = [];
 
@@ -328,17 +328,17 @@ const getVulnarability = (type ,returnAll = null) => {
   });
   const weakness = weak.filter((este, i) => weak.indexOf(este) === i);
 
-  if(returnAll) {
+  if (returnAll) {
     const res = [];
     weakness.map((we) => {
       res.push({
         name_type: we,
-        effective: 2
-      })
-    })
+        effective: 2,
+      });
+    });
     resistencia.map((r) => {
-      res.push({name_type: r, effective: "1/2"})
-    })
+      res.push({ name_type: r, effective: "1/2" });
+    });
 
     return res;
   }
@@ -353,7 +353,7 @@ function capitalize(str) {
 const hasEggGroup = (egg_groups, groupName, name) => {
   let result = null;
   egg_groups.map((group) => {
-    group.name === name ? result = groupName : "";
+    group.name === name ? (result = groupName) : "";
   });
   return result;
 };
@@ -361,67 +361,70 @@ const hasEggGroup = (egg_groups, groupName, name) => {
 const getEggGroupsFromated = (groups, name) => {
   const res = [];
   groups.map((group) => {
-    const has = hasEggGroup(group.pokemon_species, group.name, name)
-    if(has) res.push(has)
-  })
+    const has = hasEggGroup(group.pokemon_species, group.name, name);
+    if (has) res.push(has);
+  });
   return res;
-}
+};
 
 const getEvolves = (data) => {
-  const { id, chain } = data
-  const getMinLevel = (arr) => arr.map((l) => l.min_level)
+  const { id, chain } = data;
+  const getMinLevel = (arr) => arr.map((l) => l.min_level);
   const getIdForImg = (str) => {
-    const s = str.split('species/').pop()
-    const id = s.split('/').shift()
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
-  }
+    const s = str.split("species/").pop();
+    const id = s.split("/").shift();
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+  };
   const result = [
     {
       name: chain.species.name,
-      min_level: '',
-      url: getIdForImg(chain.species.url)
-    }
+      min_level: "",
+      url: getIdForImg(chain.species.url),
+    },
   ];
   const evolves = (arr) => {
     arr.map((e) => {
-      const [minLevel] = getMinLevel(e.evolution_details)
+      const [minLevel] = getMinLevel(e.evolution_details);
       result.push({
         name: e.species.name,
         min_level: minLevel,
-        url: getIdForImg(e.species.url)
-      })
-      evolves(e.evolves_to)
-    })
-  }
-  evolves(chain.evolves_to)
+        url: getIdForImg(e.species.url),
+      });
+      evolves(e.evolves_to);
+    });
+  };
+  evolves(chain.evolves_to);
   return result;
-}
+};
 
-const getInfo = arr => {
+const getInfo = (arr) => {
   const description = arr
     .filter((desc) => desc.language.name === "en")
     .sort((a, b) => a.version.url - b.version.url)
     .slice(-1);
   return description[0].flavor_text;
-}
+};
 
 /**
  * Gender Ratio
  * 1 = 8 then (100/8) = 12.5
  */
 const getGenderRate = (gender_rate) => {
-  if(gender_rate === -1 ) return ['Genderless'];
+  if (gender_rate === -1) return ["Genderless"];
 
   const genderRatioFemale = 12.5 * gender_rate;
   const genderRatioMale = 12.5 * (8 - gender_rate);
 
-  return [genderRatioMale, genderRatioFemale]
-}
+  return [
+    { name: "male", rate: genderRatioMale },
+    { name: "female", rate: genderRatioFemale },
+  ];
+};
 
-const getCatchRate = capture_rate => {
-  const rate = Math.round((100 / 255) * capture_rate)
-  return `${capture_rate} (${rate}%, full HP)`
-}
+const getCatchRate = (capture_rate) => {
+  const rate = Math.round((100 / 255) * capture_rate);
+  return `${capture_rate} (${rate}%, full HP)`;
+};
 
 module.exports = {
   getColor,
@@ -436,5 +439,5 @@ module.exports = {
   getEvolves,
   getInfo,
   getGenderRate,
-  getCatchRate
+  getCatchRate,
 };
