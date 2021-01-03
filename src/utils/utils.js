@@ -172,39 +172,22 @@ const formatNumber = (number) => {
   }
 };
 
+const hectogramsToKilograms = (n) => {
+  return (n/10);
+}
+
+const decimetresToMeters = (n) => {
+  return (n/10);
+}
+
 const formatHeight = (number) => {
-  const n = number.toString().length;
-  switch (n) {
-    case 1:
-      return `0.${number} m`;
-
-    case 2:
-      const num = number.toString().split("");
-      return `${num[0]}.${num[1]} m`;
-
-    default:
-      return `${number} m`;
-  }
+  const m = decimetresToMeters(number);
+  return `${m} m`;
 };
 
 const formatWeight = (number) => {
-  const n = number.toString().length;
-  switch (n) {
-    case 1:
-      return `0.${number} kg`;
-
-    case 2:
-      var num = number.toString().split("");
-      return `${num[0]}.${num[1]} kg`;
-
-    case 3:
-      var num = number.toString().split("");
-      return `${num[0]}${num[1]}.${num[2]} kg`;
-
-    default:
-      var num = number.toString().split("");
-      return `${num[0]}${num[1]}${num[2]}.${num[3]} kg`;
-  }
+  const kg = hectogramsToKilograms(number);
+  return `${kg} kg`;
 };
 
 const getEffectiveByType = (type) => {
