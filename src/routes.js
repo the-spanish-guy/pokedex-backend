@@ -5,7 +5,7 @@ const routes = express.Router();
 const AllPokemonController = require('./controllers/AllPokemonController')
 const PokemonController = require('./controllers/PokemonController')
 
-routes.get('/', AllPokemonController.index)
+routes.get('/', AllPokemonController.show)
 routes.get('/:idOrName', AllPokemonController.index)
 routes.get('/pokemon/:id', PokemonController.index)
 
