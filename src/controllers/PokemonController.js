@@ -16,7 +16,7 @@ const {
   getEvolves,
   capitalize,
   getGenderRate,
-  getCatchRate
+  getCatchRate,
 } = require("../utils/utils");
 
 module.exports = {
@@ -32,26 +32,33 @@ module.exports = {
       base_experience,
       stats,
     } = await getSpecificPokemon(id);
-    const re = new RegExp("-")
-    const resRegex = re.exec(name)
+    const re = new RegExp("-");
+    const resRegex = re.exec(name);
     let formatedName = id;
-    if(resRegex) {
-      const [newName] = name.split("-")
-      formatedName = newName
+    if (resRegex) {
+      const [newName] = name.split("-");
+      formatedName = newName;
     }
-    console.log("aqui")
-    console.log(formatedName)
+    console.log("aqui");
+    console.log(formatedName);
     const category = await getCategory(formatedName);
     const other_forms = await getVariant(formatedName);
     const male = await getGenderList(1);
     const female = await getGenderList(2);
     const unknow = await getGenderList(3);
     const weakness = getVulnarability(types);
-    const { base_happiness, capture_rate, growth_rate, egg_groups, evolution_chain, gender_rate } = await getSpecie(formatedName);
-    const evolutions = await getEvolutions(evolution_chain)
+    const {
+      base_happiness,
+      capture_rate,
+      growth_rate,
+      egg_groups,
+      evolution_chain,
+      gender_rate,
+    } = await getSpecie(formatedName);
+    const evolutions = await getEvolutions(evolution_chain);
     let evolves;
-    if(evolutions) {
-      evolves = getEvolves(evolutions)
+    if (evolutions) {
+      evolves = getEvolves(evolutions);
     }
 
     const gender = [];
@@ -87,8 +94,11 @@ module.exports = {
         ev_yield: stats.filter((r) => r.effort >= 1),
       },
       breeding: {
-        egg_groups: egg_groups[0].name === 'no-eggs' ? ['Undiscovered'] : egg_groups,
-        gender_rate: getGenderRate(gender_rate)
+        egg_groups:
+          egg_groups[0].name === "no-eggs"
+            ? [{ name: "Undiscovered" }]
+            : egg_groups,
+        gender_rate: getGenderRate(gender_rate),
       },
       base_stats: stats,
       type: getVulnarability(types, true),
