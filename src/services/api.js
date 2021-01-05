@@ -42,34 +42,36 @@ const getGenderList = async (id) => {
 };
 
 const getSpecie = async (nameorId) => {
-  const { data } = await api.get(`/pokemon-species/${nameorId}`);
+  const { data } = await api
+    .get(`/pokemon-species/${nameorId}`)
+    .catch((e) => console.log(e));
   return data;
 };
 
-const getEggGroups = async (nameorId ) => {
-  const { data: { names, id, pokemon_species} } = await api.get(
-    `https://pokeapi.co/api/v2/egg-group/${nameorId}`
-    );
-    const [ name ] = names
+const getEggGroups = async (nameorId) => {
+  const {
+    data: { names, id, pokemon_species },
+  } = await api.get(`https://pokeapi.co/api/v2/egg-group/${nameorId}`);
+  const [name] = names
     .filter((gen) => gen.language.name === "en")
-    .map((a) => a.name)
+    .map((a) => a.name);
   return {
     id,
     name,
-    pokemon_species
+    pokemon_species,
   };
 };
 
 const getEvolutions = async (evolution_chain) => {
   const url = evolution_chain.url.split("api/v2");
   const res = await api.get(url[1]).catch((e) => {
-    if(e.response.status) {
-      return '';
+    if (e.response.status) {
+      return "";
     }
     console.log("[ERROR] error while get list of pokemons ", e);
-  })
-  return res.data !== '' ? res.data : null;
-}
+  });
+  return res.data !== "" ? res.data : null;
+};
 
 module.exports = {
   getAllPokemons,
