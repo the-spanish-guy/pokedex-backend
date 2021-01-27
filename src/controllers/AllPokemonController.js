@@ -2,21 +2,21 @@ const {
   getAllPokemons,
   getSpecificPokemon,
   getImagePokemon,
-  getSpecie,
-} = require("../services/api");
-const { getColor, getInfo } = require("../utils/utils");
+  getSpecie
+} = require('../services/api')
+const { getColor, getInfo } = require('../utils/utils')
 
 module.exports = {
   async show(req, res) {
-    const data = [];
-    const { results } = await getAllPokemons();
+    const { results } = await getAllPokemons()
 
     const promises = results.map(async ({ name }) => {
-      const pokemon = await getSpecificPokemon(name);
-      const img = pokemon.sprites.other["official-artwork"].front_default;
-      const type = getColor(pokemon.types[0].type.name);
-      const { flavor_text_entries } = await getSpecie(pokemon.id);
-      const info = getInfo(flavor_text_entries);
+      console.log('entrei')
+      const pokemon = await getSpecificPokemon(name)
+      const img = pokemon.sprites.other['official-artwork'].front_default
+      const type = getColor(pokemon.types[0].type.name)
+      const { flavor_text_entries } = await getSpecie(pokemon.id)
+      const info = getInfo(flavor_text_entries)
 
       return {
         id: pokemon.id,
@@ -26,23 +26,26 @@ module.exports = {
         color: type,
         types: pokemon.types,
         info,
-        all: pokemon,
-      };
-    });
+        all: pokemon
+      }
+    })
+    const arr = await Promise.all(promises)
 
-    const arr = await Promise.all(promises);
-
-    res.json({ data: arr });
+    res.json({ data: arr })
   },
 
   async index(req, res) {
-    const { idOrName } = req.params;
+    const { idOrName } = req.params
 
-    const pokemon = await getSpecificPokemon(idOrName);
-    const img = pokemon.sprites.other["official-artwork"].front_default;
-    const type = getColor(pokemon.types[0].type.name);
-    const { flavor_text_entries } = await getSpecie(pokemon.id);
-    const info = getInfo(flavor_text_entries);
+    const pokemon = await getSpecificPokemon(idOrName)
+
+    // prevent name with '-'
+    const splitName = pokemon.name.split('-')[0]
+
+    const img = pokemon.sprites.other['official-artwork'].front_default
+    const type = getColor(pokemon.types[0].type.name)
+    const { flavor_text_entries } = await getSpecie(splitName)
+    const info = getInfo(flavor_text_entries)
 
     const arr = {
       id: pokemon.id,
@@ -52,9 +55,9 @@ module.exports = {
       color: type,
       types: pokemon.types,
       info,
-      all: pokemon,
-    };
+      all: pokemon
+    }
 
-    res.json({ ...arr });
-  },
-};
+    res.json({ ...arr })
+  }
+}

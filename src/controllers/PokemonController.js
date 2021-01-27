@@ -17,6 +17,7 @@ const {
   capitalize,
   getGenderRate,
   getCatchRate,
+  getEffectivetypeByType,
 } = require("../utils/utils");
 
 module.exports = {
@@ -33,12 +34,27 @@ module.exports = {
       stats,
       id: pokemonId,
     } = await getSpecificPokemon(id);
-    const category = await getCategory(pokemonId);
-    const other_forms = await getVariant(pokemonId);
+    // prevent name with -
+    const splitName = name.split("-")[0];
+
+    const category = await getCategory(splitName);
+
+    const other_forms = await getVariant(splitName);
     const male = await getGenderList(1);
     const female = await getGenderList(2);
     const unknow = await getGenderList(3);
     const weakness = getVulnarability(types);
+    const typeEffective =
+      types.length > 1
+        ? getEffectivetypeByType(
+            types[0].type.name.toUpperCase(),
+            types[1].type.name.toUpperCase()
+          )
+        : getEffectivetypeByType(types[0].type.name.toUpperCase());
+
+    console.log(types.length);
+    console.log(types);
+    console.log("passei");
     const {
       base_happiness,
       capture_rate,
@@ -46,7 +62,7 @@ module.exports = {
       egg_groups,
       evolution_chain,
       gender_rate,
-    } = await getSpecie(pokemonId);
+    } = await getSpecie(splitName);
     const evolutions = await getEvolutions(evolution_chain);
     let evolves;
     if (evolutions) {
@@ -93,7 +109,7 @@ module.exports = {
         gender_rate: getGenderRate(gender_rate),
       },
       base_stats: stats,
-      type: getVulnarability(types, true),
+      type: typeEffective,
       evolves: evolves ? evolves : [`${capitalize(name)} dont has evolution`],
       other_forms,
     };

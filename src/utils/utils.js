@@ -310,6 +310,90 @@ const getEffectiveByType = (type) => {
   }
 };
 
+const types = [
+  "NORMAL",
+  "FIGHTING",
+  "FLYING",
+  "POISON",
+  "GROUND",
+  "ROCK",
+  "BUG",
+  "GHOST",
+  "STEEL",
+  "FIRE",
+  "WATER",
+  "GRASS",
+  "ELECTRIC",
+  "PSYCHIC",
+  "ICE",
+  "DRAGON",
+  "DARK",
+  "FAIRY",
+];
+
+const effectiveTableOfType = [
+  [1, 1, 1, 1, 1, 0.5, 1, 0, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+  [2, 1, 0.5, 0.5, 1, 2, 0.5, 0, 2, 1, 1, 1, 1, 0.5, 2, 1, 2, 0.5],
+  [1, 2, 1, 1, 1, 0.5, 2, 1, 0.5, 1, 1, 2, 0.5, 1, 1, 1, 1, 1],
+  [1, 1, 1, 0.5, 0.5, 0.5, 1, 0.5, 0, 1, 1, 2, 1, 1, 1, 1, 1, 2],
+  [1, 1, 0, 2, 1, 2, 0.5, 1, 2, 2, 1, 0.5, 2, 1, 1, 1, 1, 1],
+  [1, 0.5, 2, 1, 0.5, 1, 2, 1, 0.5, 2, 1, 1, 1, 1, 2, 1, 1, 1],
+  [1, 0.5, 0.5, 0.5, 1, 1, 1, 0.5, 0.5, 0.5, 1, 2, 1, 2, 1, 1, 2, 0.5],
+  [0, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 0.5, 1],
+  [1, 1, 1, 1, 1, 2, 1, 1, 0.5, 0.5, 0.5, 1, 0.5, 1, 2, 1, 1, 2],
+  [1, 1, 1, 1, 1, 0.5, 2, 1, 2, 0.5, 0.5, 2, 1, 1, 2, 0.5, 1, 1],
+  [1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 0.5, 0.5, 1, 1, 1, 0.5, 1, 1],
+  [1, 1, 0.5, 0.5, 2, 2, 0.5, 1, 0.5, 0.5, 2, 0.5, 1, 1, 1, 0.5, 1, 1],
+  [1, 1, 2, 1, 0, 1, 1, 1, 1, 1, 2, 0.5, 0.5, 1, 1, 0.5, 1, 1],
+  [1, 2, 1, 2, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 0.5, 1, 1, 0, 1],
+  [1, 1, 2, 1, 2, 1, 1, 1, 0.5, 0.5, 0.5, 2, 1, 1, 0.5, 2, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1, 1, 1, 1, 2, 1, 0],
+  [1, 0.5, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 0.5, 0.5],
+  [1, 2, 1, 0.5, 1, 1, 1, 1, 0.5, 0.5, 1, 1, 1, 1, 1, 2, 2, 1],
+];
+
+const findIndex = (type) =>
+  types.findIndex((t, i) => {
+    if (t === type) {
+      return i;
+    }
+  });
+
+const arrContentNumber = (arr) => {
+  const res = [];
+  arr.map((el) => {
+    if (!Number.isNaN(el.value) && el.value !== 1) {
+      res.push({ type: el.type, value: el.value });
+    }
+  });
+  return res;
+};
+
+const getEffectivetypeByType = (t1, t2 = null) => {
+  const sum = [];
+  const i1 = findIndex(t1);
+  const i2 = findIndex(t2);
+  console.log(t1);
+  console.log(t2);
+  for (var i = 0; i < effectiveTableOfType.length; i++) {
+    if (t2 === null) {
+      const m = effectiveTableOfType[i][i1];
+
+      const r = { type: types[i], value: m };
+
+      sum.push(r);
+      //return
+    }
+    const m = effectiveTableOfType[i][i1] * effectiveTableOfType[i][i2];
+    const r = { type: types[i], value: m };
+
+    sum.push(r);
+  }
+  const res = arrContentNumber(sum);
+
+  return res;
+};
+
 const getVulnarability = (type, returnAll = null) => {
   let vulnerabilidade = [],
     resistencia = [];
@@ -440,4 +524,5 @@ module.exports = {
   getInfo,
   getGenderRate,
   getCatchRate,
+  getEffectivetypeByType,
 };
