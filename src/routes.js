@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require('express')
 
-const routes = express.Router();
+const routes = express.Router()
 
 const AllPokemonController = require('./controllers/AllPokemonController')
 const PokemonController = require('./controllers/PokemonController')
@@ -11,4 +11,4 @@ routes.get('/pokemon/:id', PokemonController.index)
 
 // https://pokeapi.co/api/v2/type/grass/
 
-module.exports = routes;
+module.exports = routes

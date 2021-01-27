@@ -39,7 +39,7 @@ module.exports = {
 
     const pokemon = await getSpecificPokemon(idOrName)
 
-    // prevent name with '-'
+    // prevent name with -
     const splitName = pokemon.name.split('-')[0]
 
     const img = pokemon.sprites.other['official-artwork'].front_default
