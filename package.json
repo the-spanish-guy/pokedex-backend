@@ -6,7 +6,7 @@
   "author": "Luis Enrique",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon --inspect src/server.js",
+    "dev": "nodemon --inspect src/teste.ts",
     "start": "node src/server.js",
     "lint": "eslint 'src/*/**/*.{ts,tsx}' --quiet --fix"
   },
@@ -17,6 +17,8 @@
     "nodemon": "^2.0.15"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
     "eslint": "^8.8.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
