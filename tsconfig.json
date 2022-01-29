@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "target": "es5",
+    "outDir": ".build",
+    "types": ["node", "jest"],
+    "moduleResolution": "node",
+    "lib": ["es2015"],
+    "rootDir": "./",
+    "baseUrl": ".",
+    "paths": {
+      "@entities/*": ["./src/entities/*"],
+      "@services/*": ["./src/services/*"],
+      "@interfaces/*": ["./src/interfaces/*"],
+      "@validations/*": ["./src/validations/*"],
+      "@controllers/*": ["./src/controllers/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"]
+}

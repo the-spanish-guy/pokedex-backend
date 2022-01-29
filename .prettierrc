@@ -1,7 +1,17 @@
 {
-  "trailingComma": "none",
-  "tabWidth": 2,
   "semi": false,
+  "trailingComma": "none",
+  "arrowParens": "avoid",
   "singleQuote": true,
-  "printWidth": 80
+  "tabWidth": 2,
+  "printWidth": 80,
+  "endOfLine": "auto",
+  "overrides": [
+    {
+      "files": [
+        "src/**/*.{ts,tsx}",
+        "tests/**/*.spec.{ts,tsx}"
+      ]
+    }
+  ]
 }
