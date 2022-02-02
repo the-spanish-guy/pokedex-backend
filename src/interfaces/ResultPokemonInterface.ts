@@ -9,3 +9,16 @@ export interface IResultPokemon {
   previous: null | string
   results: IResult[]
 }
+
+interface IMages {
+  url: string
+  svg: string
+}
+
+export class ResultPokemon {
+  id: string
+  name: string
+  images: IMages
+  color: string
+  info: string
+}
