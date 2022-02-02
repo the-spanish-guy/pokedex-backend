@@ -1,5 +1,5 @@
 import axios from 'axios'
 
-export const deployConnection = axios.create({
+export const pokemonConnection = axios.create({
   baseURL: process.env.API_DOMAIN
 })
