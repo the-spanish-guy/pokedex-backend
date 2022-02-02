@@ -4,5 +4,5 @@ coverage
 *.yml
 *.lock
 *.md
-.build
+.dist
 .husky

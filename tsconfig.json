@@ -1,26 +1,45 @@
 {
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "preserveConstEnums": true,
-    "strictNullChecks": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "allowJs": true,
-    "target": "es5",
-    "outDir": ".build",
-    "types": ["node", "jest"],
+    "target": "es6",
+    "lib": ["es6"],
+
+    "module": "commonjs",
     "moduleResolution": "node",
-    "lib": ["es2015"],
-    "rootDir": "./",
     "baseUrl": ".",
     "paths": {
-      "@entities/*": ["./src/entities/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@schemas/*": ["./src/schemas/*"],
       "@services/*": ["./src/services/*"],
       "@interfaces/*": ["./src/interfaces/*"],
+      "@controllers/*": ["./src/controllers/*"],
       "@validations/*": ["./src/validations/*"],
-      "@controllers/*": ["./src/controllers/*"]
-    }
+      "@middlewares/*": ["./src/middlewares/*"]
+    },
+    "rootDirs": ["."],
+    "types": ["node", "jest"],
+
+    "allowJs": true,
+
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "removeComments": true,
+    "noEmit": true,
+
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": false,
+    "noUnusedLocals": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+
+    "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts"]
+  "include": ["src/**/*", "__tests__/**/*.ts"],
+  "exclude": ["node_modules"]
 }
