@@ -4,7 +4,7 @@ interface ILanguage {
   language: IResult
 }
 
-interface IFlavorTextEntries {
+export interface IFlavorTextEntries {
   ['flavor_text']: string
   language: IResult
   version: IResult
