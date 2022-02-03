@@ -3,13 +3,13 @@ import {
   IMages,
   IResultPokemon,
   ResultPokemon
-} from '@interfaces/ResultPokemonInterface'
-import { IPokemon, ISprite } from '@interfaces/PokemonInterface'
+} from '@interfaces/ResultPokemonApiInterface'
+import { IPokemonApi, ISprite } from '@interfaces/PokemonApiInterface'
 import { getColor } from '@utils/ColorUtils'
 import {
   IFlavorTextEntries,
-  IPokemonSpecie
-} from '@interfaces/PokemonSpecieInterface'
+  IPokemonSpecieApi
+} from '@interfaces/PokemonSpecieApiInterface'
 
 class PokemonService {
   private getImages({
@@ -28,15 +28,15 @@ class PokemonService {
     return description.flavor_text
   }
 
-  private async getSpecie(id: string): Promise<IPokemonSpecie> {
+  private async getSpecie(id: string): Promise<IPokemonSpecieApi> {
     return await pokemonConnection
-      .get<IPokemonSpecie>(`/pokemon-species/${id}`)
+      .get<IPokemonSpecieApi>(`/pokemon-species/${id}`)
       .then(({ data }) => data)
   }
 
-  private async getSpecificPokemon(id: string): Promise<IPokemon> {
+  private async getSpecificPokemon(id: string): Promise<IPokemonApi> {
     return await pokemonConnection
-      .get<IPokemon>(`/pokemon/${id}`)
+      .get<IPokemonApi>(`/pokemon/${id}`)
       .then(({ data }) => data)
   }
 
@@ -75,9 +75,9 @@ class PokemonService {
     return result
   }
 
-  public async show(id: string): Promise<IPokemon> {
+  public async show(id: string): Promise<IPokemonApi> {
     return await pokemonConnection
-      .get<IPokemon>(`/pokemon/${id}`)
+      .get<IPokemonApi>(`/pokemon/${id}`)
       .then(({ data }) => data)
   }
 }

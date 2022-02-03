@@ -31,7 +31,7 @@ interface IFormDescriptions extends ILanguage {
   description: string
 }
 
-export interface IPokemonSpecie {
+export interface IPokemonSpecieApi {
   ['id']: number
   habitat: null
   shape: IResult

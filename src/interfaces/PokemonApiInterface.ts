@@ -308,7 +308,7 @@ interface IPastTypes {
   }[]
 }
 
-export interface IPokemon {
+export interface IPokemonApi {
   id: number
   name: string
   order: number
