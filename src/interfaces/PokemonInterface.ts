@@ -1,4 +1,4 @@
-interface IResult {
+export interface IResult {
   name: string
   url: string
 }
@@ -290,23 +290,41 @@ export interface ITypes {
   type: IResult
 }
 
+interface IVersionDetails {
+  rarity: number
+  version: IResult
+}
+
+interface IHeldItems {
+  item: IResult
+  ['version_details']: IVersionDetails
+}
+
+interface IPastTypes {
+  generation: IResult
+  types: {
+    slot: number
+    type: IResult
+  }[]
+}
+
 export interface IPokemon {
-  abilities: IAblities[]
-  ['base_experience']: number
-  forms: IResult[]
-  ['game_indices']: IGameIndices[]
-  height: number
-  ['held_items']: Array<string>
   id: number
-  ['is_default']: boolean
-  ['location_area_encounters']: string
-  moves: IMove
   name: string
   order: number
-  ['past_types']: Array<string>
-  species: IResult
-  sprites: ISprite
+  height: number
+  weight: number
+  moves: IMove[]
   stats: IStats[]
   types: ITypes[]
-  weight: number
+  species: IResult
+  sprites: ISprite
+  forms: IResult[]
+  abilities: IAblities[]
+  ['is_default']: boolean
+  ['base_experience']: number
+  ['past_types']: IPastTypes[]
+  ['held_items']: IHeldItems[]
+  ['game_indices']: IGameIndices[]
+  ['location_area_encounters']: string
 }
