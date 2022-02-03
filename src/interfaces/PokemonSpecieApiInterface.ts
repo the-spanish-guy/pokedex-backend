@@ -1,4 +1,4 @@
-import { IResult } from './PokemonInterface'
+import { IResult } from './PokemonApiInterface'
 
 interface ILanguage {
   language: IResult

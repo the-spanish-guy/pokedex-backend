@@ -1,4 +1,4 @@
-import { ITypes } from './PokemonInterface'
+import { ITypes } from './PokemonApiInterface'
 
 interface IResult {
   name: string
