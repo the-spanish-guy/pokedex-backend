@@ -250,7 +250,7 @@ export interface IVersions {
   ['generation-viii']: IGenerationViii
 }
 
-interface ISprite extends Partial<ITypeSprite> {
+export interface ISprite extends Partial<ITypeSprite> {
   other: {
     ['dream_world']: Omit<
       ITypeSprite,
@@ -285,7 +285,7 @@ interface IStats {
   stat: IResult
 }
 
-interface ITypes {
+export interface ITypes {
   slot: number
   type: IResult
 }
@@ -306,7 +306,7 @@ export interface IPokemon {
   ['past_types']: Array<string>
   species: IResult
   sprites: ISprite
-  stats: IStats
-  types: ITypes
+  stats: IStats[]
+  types: ITypes[]
   weight: number
 }
