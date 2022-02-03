@@ -8,7 +8,7 @@ interface IGameIndices {
   version: IResult
 }
 
-interface IAblities {
+export interface IAbilities {
   ability: IResult
   ['is_hidden']: boolean
   slot: number
@@ -279,7 +279,7 @@ export interface ISprite extends Partial<ITypeSprite> {
   versions: IVersions
 }
 
-interface IStats {
+export interface IStats {
   ['base_stat']: number
   effort: number
   stat: IResult
@@ -320,7 +320,7 @@ export interface IPokemonApi {
   species: IResult
   sprites: ISprite
   forms: IResult[]
-  abilities: IAblities[]
+  abilities: IAbilities[]
   ['is_default']: boolean
   ['base_experience']: number
   ['past_types']: IPastTypes[]
