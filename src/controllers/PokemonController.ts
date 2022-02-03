@@ -3,8 +3,14 @@ import PokemonService from '@services/PokemonService'
 
 class PokemonController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const shouldDeploy = await PokemonService.index()
-    return response.json(shouldDeploy)
+    const { id } = request.query
+    if (id) {
+      const pokemon = await PokemonService.getOne(id as string)
+      return response.json([pokemon])
+    }
+
+    const pokemons = await PokemonService.index()
+    return response.json(pokemons)
   }
 
   public async show(requets: Request, response: Response): Promise<Response> {
