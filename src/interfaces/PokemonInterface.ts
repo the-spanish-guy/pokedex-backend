@@ -10,7 +10,7 @@ interface ITraining {
   ['base_friendship']: number
   ['growth_rate']: string
   ['base_exp']: number
-  ['ev_yield']: IEvYield
+  ['ev_yield']: IEvYield[]
 }
 
 interface IGenderRate {
@@ -23,7 +23,7 @@ interface IBreeding {
   ['gender_rate']: IGenderRate[]
 }
 
-interface IType {
+export interface IType {
   type: string
   value: number
 }
@@ -42,15 +42,15 @@ interface IOtherForms {
 export interface IPokemon {
   weight: string
   height: string
-  abilities: IAbilities
+  abilities: IAbilities[]
   category: string
   gender: Array<string>
-  warkness: Array<string>
+  weakness: Array<string>
 
   training: ITraining
   breeding: IBreeding
   ['base_stats']: IStats[]
   type: IType[]
   evolves: IEvolves[]
-  ['other_forms']: IOtherForms
+  ['other_forms']: IOtherForms[]
 }

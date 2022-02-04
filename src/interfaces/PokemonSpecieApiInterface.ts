@@ -19,12 +19,13 @@ interface INames extends ILanguage {
   name: string
 }
 
-interface IGenera extends ILanguage {
+export interface IGenera extends ILanguage {
   genus: string
 }
 
-interface IVarieties extends ILanguage {
+interface IVarieties {
   ['is_default']: boolean
+  pokemon: IResult
 }
 
 interface IFormDescriptions extends ILanguage {
