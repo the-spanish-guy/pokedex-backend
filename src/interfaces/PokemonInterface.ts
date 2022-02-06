@@ -28,9 +28,9 @@ export interface IType {
   value: number
 }
 
-interface IEvolves {
+export interface IEvolves {
   name: string
-  ['min_level']: string
+  ['min_level']: number
   url: string
 }
 
