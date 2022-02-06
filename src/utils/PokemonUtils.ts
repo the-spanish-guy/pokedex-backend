@@ -1,5 +1,10 @@
 import { ITypes } from '@interfaces/PokemonApiInterface'
-import { IType } from '@interfaces/PokemonInterface'
+import {
+  IChain,
+  IEvolutionDetails,
+  IEvolvesTo
+} from '@interfaces/PokemonEvolutionChainApi'
+import { IEvolves, IType } from '@interfaces/PokemonInterface'
 
 const getEffectiveByType = (
   type: string
@@ -124,7 +129,6 @@ export const getVulnarability = (
       ['name_type']: string
       effective: string | number
     }> => {
-  console.log(types)
   const vulnerabilities: Array<string> = []
   const resistance: Array<string> = []
 
@@ -190,13 +194,27 @@ export const getCatchRate = (captureRate: number) => {
   return `${captureRate} (${rate}%, full HP)`
 }
 
+/**
+ * Gender Ratio
+ * 1 = 8 then (100/8) = 12.5
+ */
+export const getGenderRate = (
+  rate: number
+): Array<{ name: string; rate: number }> => {
+  if (rate === -1) return [{ name: 'Genderless', rate: 0 }]
+
+  const genderRatioFemale = 12.5 * rate
+  const genderRatioMale = 12.5 * (8 - rate)
+
+  return [
+    { name: 'male', rate: genderRatioMale },
+    { name: 'female', rate: genderRatioFemale }
+  ]
+}
+
 const findIndex = (type: string) => {
-  console.log('findIndex')
-  console.log(type)
-  // return typesOfPokemon.findIndex((valueType, index) => valueType === type ? index : -1)
   // eslint-disable-next-line array-callback-return
   return typesOfPokemon.findIndex((valueType, index) => {
-    console.log('t', valueType)
     if (valueType === type) {
       return index
     }
@@ -214,8 +232,6 @@ const arrContentNumber = (arr: IType[]) => {
 }
 
 export const getEffectivetypeByType = (types: ITypes[]) => {
-  console.info('types of pokemons')
-  console.log(types)
   const type1: string = types[0].type.name.toUpperCase()
   let type2: string | null = null
 
@@ -242,7 +258,40 @@ export const getEffectivetypeByType = (types: ITypes[]) => {
   }
   const res = arrContentNumber(sum)
 
-  console.log(JSON.stringify(res, null, 2))
-
   return res
+}
+
+export const getEvolves = (chain: IChain): IEvolves[] => {
+  const getMinLevel = (details: IEvolutionDetails[]) =>
+    details.filter(l => l.min_level)
+  const getIdForImg = (url: string) => {
+    const id = url.replace(/\D/g, '').substring(1)
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
+  }
+  const result = [
+    {
+      name: chain.species.name,
+      min_level: 0,
+      url: getIdForImg(chain.species.url)
+    }
+  ]
+  const evolves = (evolvesTo: IEvolvesTo[]) => {
+    evolvesTo.forEach(
+      ({
+        evolution_details: evolutionDetails,
+        species: { name, url },
+        evolves_to: evolvesTo
+      }) => {
+        const [{ min_level: minLevel }] = getMinLevel(evolutionDetails)
+        result.push({
+          name: name,
+          min_level: minLevel,
+          url: getIdForImg(url)
+        })
+        evolves(evolvesTo)
+      }
+    )
+  }
+  evolves(chain.evolves_to)
+  return result
 }
