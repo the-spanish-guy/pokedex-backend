@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/server.ts",
-    "start": "node dist/server.js",
+    "start": "npx ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/server.ts",
     "build": "sucrase ./src -d ./dist --transforms typescript,imports && tscpaths -p tsconfig.json -s ./src -o ./dist",
     "commit": "git-cz",
     "lint-staged": "lint-staged",
