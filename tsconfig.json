@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["es6"],
+
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@utils/*": ["./src/utils/*"],
+      "@schemas/*": ["./src/schemas/*"],
+      "@services/*": ["./src/services/*"],
+      "@interfaces/*": ["./src/interfaces/*"],
+      "@controllers/*": ["./src/controllers/*"],
+      "@validations/*": ["./src/validations/*"],
+      "@middlewares/*": ["./src/middlewares/*"]
+    },
+    "rootDirs": ["."],
+    "types": ["node", "jest"],
+
+    "allowJs": true,
+
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "removeComments": true,
+    "noEmit": true,
+
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": false,
+    "noUnusedLocals": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*", "__tests__/**/*.ts"],
+  "exclude": ["node_modules"]
+}
