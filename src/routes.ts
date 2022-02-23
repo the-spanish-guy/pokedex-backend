@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import PokemonController from '@controllers/PokemonController'
+import PokemonController from './controllers/PokemonController'
 
 const routes = Router()
 
