@@ -2,7 +2,7 @@
   "name": "ts-express",
   "version": "1.0.0",
   "description": "boilerplate Express + TypeScript",
-  "main": "index.js",
+  "main": "src/server.ts",
   "repository": "https://github.com/the-spanish-guy/boilerplates/tree/main/ts-express",
   "author": "Luis Enrique Meza Paredes",
   "license": "MIT",
