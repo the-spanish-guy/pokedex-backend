@@ -6,10 +6,10 @@
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "./dist/controllers/(.*)",
-      "destination": "/pokemons"
+      "src": "./dist/controllers/(.*)",
+      "dest": "/pokemons"
     }
   ]
 }
