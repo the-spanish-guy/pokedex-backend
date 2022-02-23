@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import PokemonService from '@services/PokemonService'
+import PokemonService from '../services/PokemonService'
 
 class PokemonController {
   public async index(request: Request, response: Response): Promise<Response> {

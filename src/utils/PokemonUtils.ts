@@ -1,10 +1,10 @@
-import { ITypes } from '@interfaces/PokemonApiInterface'
+import { ITypes } from '../interfaces/PokemonApiInterface'
 import {
   IChain,
   IEvolutionDetails,
   IEvolvesTo
-} from '@interfaces/PokemonEvolutionChainApi'
-import { IEvolves, IType } from '@interfaces/PokemonInterface'
+} from '../interfaces/PokemonEvolutionChainApi'
+import { IEvolves, IType } from '../interfaces/PokemonInterface'
 
 const getEffectiveByType = (
   type: string

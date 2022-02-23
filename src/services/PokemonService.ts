@@ -3,25 +3,25 @@ import {
   IMages,
   IResultPokemon,
   ResultPokemon
-} from '@interfaces/ResultPokemonApiInterface'
-import { IPokemonApi, ISprite } from '@interfaces/PokemonApiInterface'
-import { getColor } from '@utils/ColorUtils'
+} from '../interfaces/ResultPokemonApiInterface'
+import { IPokemonApi, ISprite } from '../interfaces/PokemonApiInterface'
+import { getColor } from '../utils/ColorUtils'
 import {
   IFlavorTextEntries,
   IGenera,
   IPokemonSpecieApi
-} from '@interfaces/PokemonSpecieApiInterface'
-import { IPokemon, IType } from '@interfaces/PokemonInterface'
-import { IPokemonGender } from '@interfaces/PokemonGenderApiInterface'
-import { formatHeight, formatWeight } from '@utils/MeasurementsUtils'
+} from '../interfaces/PokemonSpecieApiInterface'
+import { IPokemon, IType } from '../interfaces/PokemonInterface'
+import { IPokemonGender } from '../interfaces/PokemonGenderApiInterface'
+import { formatHeight, formatWeight } from '../utils/MeasurementsUtils'
 import {
   getCatchRate,
   getEffectivetypeByType,
   getEvolves,
   getGenderRate,
   getVulnarability
-} from '@utils/PokemonUtils'
-import { IEvolutionChainApi } from '@interfaces/PokemonEvolutionChainApi'
+} from '../utils/PokemonUtils'
+import { IEvolutionChainApi } from '../interfaces/PokemonEvolutionChainApi'
 
 class PokemonService {
   private getImages({

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 
-import { HttpStatus } from '@utils/HttpStatus'
-import ObjectIdValidation from '@validations/ObjectId'
+import { HttpStatus } from '../utils/HttpStatus'
+import ObjectIdValidation from '../validations/ObjectId'
 
 export const validateId = (
   request: Request,
