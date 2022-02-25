@@ -3,13 +3,13 @@ import PokemonService from '../services/PokemonService'
 
 class PokemonController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const { id } = request.query
+    const { id, offset } = request.query
     if (id) {
       const pokemon = await PokemonService.getOne(id as string)
       return response.json([pokemon])
     }
 
-    const pokemons = await PokemonService.index()
+    const pokemons = await PokemonService.index(offset)
     return response.json(pokemons)
   }
 
