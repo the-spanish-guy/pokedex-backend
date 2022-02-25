@@ -82,9 +82,9 @@ class PokemonService {
     return res
   }
 
-  public async index(): Promise<ResultPokemon[]> {
+  public async index(offset = 20, limit = 20): Promise<ResultPokemon[]> {
     const { results } = await pokemonConnection
-      .get<IResultPokemon>('/pokemon')
+      .get<IResultPokemon>(`/pokemon?offset=${offset}&limit=${limit}`)
       .then(({ data }) => data)
 
     const pokemonResult: ResultPokemon[] = []
