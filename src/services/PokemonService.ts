@@ -90,8 +90,8 @@ class PokemonService {
 
   /**
    *
-   * @see {@link https://pokemondb.net/pokebase/6506/there-formula-for-working-pokemons-highest-possible-stats}
-   * @se {@link https://pokemon.fandom.com/wiki/Statistics#Formula}
+   * @see pokemondb.net {@link https://pokemondb.net/pokebase/6506/there-formula-for-working-pokemons-highest-possible-stats}
+   * @see pokemon.fandom {@link https://pokemon.fandom.com/wiki/Statistics#Formula}
    */
   private getStats(stats: IStats[]): IPokemonStats[] {
     const [hp, ...restStats] = stats
