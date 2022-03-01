@@ -6,6 +6,18 @@ import {
 } from '../interfaces/PokemonEvolutionChainApi'
 import { IEvolves, IType } from '../interfaces/PokemonInterface'
 
+// MIN VALUES
+export const MIN_IV = 0
+export const MIN_EV = 0
+
+// MAX VALUES
+export const MAX_IV = 31
+export const MAX_EV = 252
+
+// consts
+export const LEVEL_POKEMON = 100
+export const POKEMON_NATURE = 1.1
+
 const getEffectiveByType = (
   type: string
 ): { vulnerability: Array<string>; resistent: Array<string> } => {
