@@ -1,4 +1,5 @@
-import { IAbilities, IResult, IStats } from './PokemonApiInterface'
+import { IAbilities, IResult, ITypes } from './PokemonApiInterface'
+import { IImages } from './ResultPokemonApiInterface'
 
 interface IEvYield {
   ['base_stat']: number
