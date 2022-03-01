@@ -1,6 +1,6 @@
 import { pokemonConnection } from './HttpService'
 import {
-  IIMages,
+  IImages,
   IResultPokemon,
   ResultPokemon
 } from '../interfaces/ResultPokemonApiInterface'
@@ -32,7 +32,7 @@ import { IEvolutionChainApi } from '../interfaces/PokemonEvolutionChainApi'
 class PokemonService {
   private getImages({
     other: { dream_world: dreamWorld, 'official-artwork': officialArtwork }
-  }: ISprite): IIMages {
+  }: ISprite): IImages {
     return { svg: dreamWorld.front_default, url: officialArtwork.front_default }
   }
 
@@ -88,6 +88,11 @@ class PokemonService {
     return res
   }
 
+  /**
+   *
+   * @see {@link https://pokemondb.net/pokebase/6506/there-formula-for-working-pokemons-highest-possible-stats}
+   * @se {@link https://pokemon.fandom.com/wiki/Statistics#Formula}
+   */
   private getStats(stats: IStats[]): IPokemonStats[] {
     const [hp, ...restStats] = stats
 
