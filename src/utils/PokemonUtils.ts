@@ -273,12 +273,16 @@ export const getEffectivetypeByType = (types: ITypes[]) => {
   return res
 }
 
+export const getImgByUrl = (url: string) => {
+  const id = url.replace(/\D/g, '').substring(1)
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
+}
+
 export const getEvolves = (chain: IChain): IEvolves[] => {
   const getMinLevel = (details: IEvolutionDetails[]) =>
     details.filter(l => l.min_level)
   const getIdForImg = (url: string) => {
-    const id = url.replace(/\D/g, '').substring(1)
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
+    return getImgByUrl(url)
   }
   const result = [
     {

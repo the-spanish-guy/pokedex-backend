@@ -19,6 +19,7 @@ import {
   getEffectivetypeByType,
   getEvolves,
   getGenderRate,
+  getImgByUrl,
   getVulnarability,
   LEVEL_POKEMON,
   MAX_EV,
@@ -237,6 +238,13 @@ class PokemonService {
     })
 
     const weakness = getVulnarability(types) as Array<string>
+    const otherForms = varieties.map(varietie => ({
+      ...varietie,
+      pokemon: {
+        name: varietie.pokemon.name,
+        url: getImgByUrl(varietie.pokemon.url)
+      }
+    }))
 
     return {
       id,
@@ -250,7 +258,7 @@ class PokemonService {
       types: types,
       color: getColor(types[0].type.name),
       images: this.getImages(sprites),
-      other_forms: varieties,
+      other_forms: otherForms,
       training: {
         base_friendship: baseHappiness,
         catch_rate: getCatchRate(captureRate),
