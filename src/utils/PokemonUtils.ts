@@ -257,7 +257,7 @@ export const getEffectivetypeByType = (types: ITypes[]) => {
 
   for (let i = 0; i < effectiveTableOfType.length; i++) {
     if (!type2) {
-      const value = effectiveTableOfType[i][index2]
+      const value = effectiveTableOfType[i][index1]
       const result = { type: typesOfPokemon[i], value }
 
       sum.push(result)
