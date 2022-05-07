@@ -14,8 +14,8 @@ class PokemonController {
     return response.json(pokemons)
   }
 
-  public async show(requets: Request, response: Response): Promise<Response> {
-    const { id } = requets.params
+  public async show(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params
     const pokemon = await PokemonService.show(id)
     return response.json(pokemon)
   }
