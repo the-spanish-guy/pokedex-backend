@@ -29,6 +29,8 @@ import {
   POKEMON_NATURE
 } from '../utils/PokemonUtils'
 import { IEvolutionChainApi } from '../interfaces/PokemonEvolutionChainApi'
+import { ITypeApi } from '@interfaces/TypeApiApiInterface'
+import axios from 'axios'
 
 class PokemonService {
   private getImages({
@@ -277,6 +279,18 @@ class PokemonService {
       effective_type: typeEffective,
       evolves
     }
+  }
+
+  public async getByType(id: string): Promise<ResultPokemon[]> {
+    const { pokemon: pokemons } = await pokemonConnection
+      .get<ITypeApi>(`/type/${id}`)
+      .then(({ data }) => data)
+
+    const pokemonResult = await axios.all(
+      pokemons.map(({ pokemon: { name } }) => this.getOne(name))
+    )
+
+    return pokemonResult.map(pokemon => new ResultPokemon(pokemon))
   }
 }
 
