@@ -12,7 +12,7 @@ export interface IResultPokemon {
   results: IResult[]
 }
 
-export interface IMages {
+export interface IImages {
   url: string
   svg: string
 }
@@ -20,7 +20,7 @@ export interface IMages {
 export class ResultPokemonInput {
   id: number
   name: string
-  images: IMages
+  images: IImages
   color: string
   types: ITypes[]
   info: string
@@ -29,7 +29,7 @@ export class ResultPokemonInput {
 export class ResultPokemon {
   id: number
   name: string
-  images: IMages
+  images: IImages
   color: string
   types: ITypes[]
   info: string

@@ -6,6 +6,18 @@ import {
 } from '../interfaces/PokemonEvolutionChainApi'
 import { IEvolves, IType } from '../interfaces/PokemonInterface'
 
+// MIN VALUES
+export const MIN_IV = 0
+export const MIN_EV = 0
+
+// MAX VALUES
+export const MAX_IV = 31
+export const MAX_EV = 252
+
+// consts
+export const LEVEL_POKEMON = 100
+export const POKEMON_NATURE = 1.1
+
 const getEffectiveByType = (
   type: string
 ): { vulnerability: Array<string>; resistent: Array<string> } => {
@@ -120,7 +132,7 @@ const typesOfPokemon = [
   'FAIRY'
 ]
 
-export const getVulnarability = (
+export const getVulnerability = (
   types: ITypes[],
   returnAll = false
 ):
@@ -231,7 +243,7 @@ const arrContentNumber = (arr: IType[]) => {
   return res
 }
 
-export const getEffectivetypeByType = (types: ITypes[]) => {
+export const getEffectiveTypeByType = (types: ITypes[]) => {
   const type1: string = types[0].type.name.toUpperCase()
   let type2: string | null = null
 
@@ -245,7 +257,7 @@ export const getEffectivetypeByType = (types: ITypes[]) => {
 
   for (let i = 0; i < effectiveTableOfType.length; i++) {
     if (!type2) {
-      const value = effectiveTableOfType[i][index2]
+      const value = effectiveTableOfType[i][index1]
       const result = { type: typesOfPokemon[i], value }
 
       sum.push(result)
@@ -261,13 +273,19 @@ export const getEffectivetypeByType = (types: ITypes[]) => {
   return res
 }
 
+export const getImgByUrl = (url: string) => {
+  const id = url.replace(/\D/g, '').substring(1)
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
+}
+
 export const getEvolves = (chain: IChain): IEvolves[] => {
   const getMinLevel = (details: IEvolutionDetails[]) =>
-    details.filter(l => l.min_level)
+    details.filter(l => Number(l.min_level))
+
   const getIdForImg = (url: string) => {
-    const id = url.replace(/\D/g, '').substring(1)
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
+    return getImgByUrl(url)
   }
+
   const result = [
     {
       name: chain.species.name,
@@ -275,6 +293,7 @@ export const getEvolves = (chain: IChain): IEvolves[] => {
       url: getIdForImg(chain.species.url)
     }
   ]
+
   const evolves = (evolvesTo: IEvolvesTo[]) => {
     evolvesTo.forEach(
       ({
@@ -282,7 +301,11 @@ export const getEvolves = (chain: IChain): IEvolves[] => {
         species: { name, url },
         evolves_to: evolvesTo
       }) => {
-        const [{ min_level: minLevel }] = getMinLevel(evolutionDetails)
+        const minLevelDetails = getMinLevel(evolutionDetails)
+        const minLevel = minLevelDetails.length
+          ? minLevelDetails[0].min_level
+          : 0
+
         result.push({
           name: name,
           min_level: minLevel,

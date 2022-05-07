@@ -1,32 +1,42 @@
+import axios from 'axios'
+
+import { getColor } from '../utils/ColorUtils'
 import { pokemonConnection } from './HttpService'
 import {
-  IMages,
+  IImages,
   IResultPokemon,
   ResultPokemon
 } from '../interfaces/ResultPokemonApiInterface'
-import { IPokemonApi, ISprite } from '../interfaces/PokemonApiInterface'
-import { getColor } from '../utils/ColorUtils'
 import {
   IFlavorTextEntries,
   IGenera,
   IPokemonSpecieApi
 } from '../interfaces/PokemonSpecieApiInterface'
-import { IPokemon, IType } from '../interfaces/PokemonInterface'
-import { IPokemonGender } from '../interfaces/PokemonGenderApiInterface'
+import { ITypeApi } from '@interfaces/TypeApiApiInterface'
 import { formatHeight, formatWeight } from '../utils/MeasurementsUtils'
+import { IPokemonGender } from '../interfaces/PokemonGenderApiInterface'
 import {
   getCatchRate,
-  getEffectivetypeByType,
+  getEffectiveTypeByType,
   getEvolves,
   getGenderRate,
-  getVulnarability
+  getImgByUrl,
+  getVulnerability,
+  LEVEL_POKEMON,
+  MAX_EV,
+  MAX_IV,
+  MIN_EV,
+  MIN_IV,
+  POKEMON_NATURE
 } from '../utils/PokemonUtils'
 import { IEvolutionChainApi } from '../interfaces/PokemonEvolutionChainApi'
+import { IPokemon, IPokemonStats, IType } from '../interfaces/PokemonInterface'
+import { IPokemonApi, ISprite, IStats } from '../interfaces/PokemonApiInterface'
 
 class PokemonService {
   private getImages({
     other: { dream_world: dreamWorld, 'official-artwork': officialArtwork }
-  }: ISprite): IMages {
+  }: ISprite): IImages {
     return { svg: dreamWorld.front_default, url: officialArtwork.front_default }
   }
 
@@ -82,9 +92,68 @@ class PokemonService {
     return res
   }
 
-  public async index(): Promise<ResultPokemon[]> {
+  /**
+   *
+   * @see pokemondb.net {@link https://pokemondb.net/pokebase/6506/there-formula-for-working-pokemons-highest-possible-stats}
+   * @see pokemon.fandom {@link https://pokemon.fandom.com/wiki/Statistics#Formula}
+   */
+  private getStats(stats: IStats[]): IPokemonStats[] {
+    const [hp, ...restStats] = stats
+
+    const result: IPokemonStats[] = [
+      {
+        name: 'hp',
+        stat: hp.base_stat,
+        min:
+          Math.floor(
+            0.01 *
+              (2 * hp.base_stat + MIN_IV + Math.floor(0.25 * MIN_EV)) *
+              LEVEL_POKEMON
+          ) +
+          LEVEL_POKEMON +
+          10,
+        max:
+          Math.floor(
+            0.01 *
+              (2 * hp.base_stat + MAX_IV + Math.floor(0.25 * MAX_EV)) *
+              LEVEL_POKEMON
+          ) +
+          LEVEL_POKEMON +
+          10
+      }
+    ]
+
+    restStats.forEach(stat => {
+      result.push({
+        name: stat.stat.name,
+        stat: stat.base_stat,
+        min: Math.floor(
+          Math.floor(
+            Math.floor(
+              0.01 *
+                (2 * stat.base_stat + MIN_IV + Math.floor(0.25 * MIN_EV)) *
+                LEVEL_POKEMON
+            ) + 4
+          ) / POKEMON_NATURE
+        ),
+        max: Math.floor(
+          Math.floor(
+            Math.floor(
+              0.01 *
+                (2 * stat.base_stat + MAX_IV + Math.floor(0.25 * MAX_EV)) *
+                LEVEL_POKEMON
+            ) + 5
+          ) * POKEMON_NATURE
+        )
+      })
+    })
+
+    return result
+  }
+
+  public async index(offset = 20, limit = 20): Promise<ResultPokemon[]> {
     const { results } = await pokemonConnection
-      .get<IResultPokemon>('/pokemon')
+      .get<IResultPokemon>(`/pokemon?offset=${offset}&limit=${limit}`)
       .then(({ data }) => data)
 
     const pokemonResult: ResultPokemon[] = []
@@ -103,7 +172,7 @@ class PokemonService {
   public async getOne(id: string): Promise<ResultPokemon> {
     const data = await this.getSpecificPokemon(id)
     const { flavor_text_entries: flavorTextEntries } = await this.getSpecie(
-      String(data.id)
+      String(data.species.name)
     )
     const result: ResultPokemon = {
       id: data.id,
@@ -117,16 +186,19 @@ class PokemonService {
     return result
   }
 
-  public async show(id: string): Promise<IPokemon> {
+  public async show(idOrName: string): Promise<IPokemon> {
     const {
-      height,
-      weight,
-      abilities,
+      id,
       name,
       types,
-      base_experience: baseExperience,
-      stats
-    } = await this.getSpecificPokemon(id)
+      stats,
+      weight,
+      height,
+      sprites,
+      species,
+      abilities,
+      base_experience: baseExperience
+    } = await this.getSpecificPokemon(idOrName)
 
     const {
       varieties,
@@ -137,13 +209,13 @@ class PokemonService {
       egg_groups: eggGroups,
       evolution_chain: evolutionChain,
       gender_rate: genderRate
-    } = await this.getSpecie(id)
+    } = await this.getSpecie(species.name)
 
     const chain = evolutionChain.url.replace(/\D/g, '').substring(1)
     const evolutionsApi = await this.getEvolutions(Number(chain))
     const evolves = getEvolves(evolutionsApi.chain)
 
-    const typeEffective: IType[] = getEffectivetypeByType(types)
+    const typeEffective: IType[] = getEffectiveTypeByType(types)
 
     const [
       { pokemon_species_details: male },
@@ -163,19 +235,31 @@ class PokemonService {
       if (pokeName.name === name) genders.push('female')
     })
     genderless.forEach(({ pokemon_species: pokeName }) => {
-      if (pokeName.name === name) genders.push('unknow')
+      if (pokeName.name === name) genders.push('unknown')
     })
 
-    const weakness = getVulnarability(types) as Array<string>
+    const weakness = getVulnerability(types) as Array<string>
+    const otherForms = varieties.map(varietie => ({
+      ...varietie,
+      pokemon: {
+        name: varietie.pokemon.name,
+        url: getImgByUrl(varietie.pokemon.url)
+      }
+    }))
 
     return {
+      id,
+      name,
       height: formatHeight(height),
       weight: formatWeight(weight),
       abilities,
       category: this.getCategory(genera),
       gender: genders,
       weakness,
-      other_forms: varieties,
+      types: types,
+      color: getColor(types[0].type.name),
+      images: this.getImages(sprites),
+      other_forms: otherForms,
       training: {
         base_friendship: baseHappiness,
         catch_rate: getCatchRate(captureRate),
@@ -183,7 +267,6 @@ class PokemonService {
         base_exp: baseExperience,
         ev_yield: stats.filter(r => r.effort >= 1)
       },
-      base_stats: stats,
       breeding: {
         egg_groups:
           eggGroups[0].name === 'no-eggs'
@@ -191,9 +274,22 @@ class PokemonService {
             : eggGroups,
         gender_rate: getGenderRate(genderRate)
       },
-      evolves,
-      type: typeEffective
+      base_stats: this.getStats(stats),
+      effective_type: typeEffective,
+      evolves
     }
+  }
+
+  public async getByType(id: string): Promise<ResultPokemon[]> {
+    const { pokemon: pokemons } = await pokemonConnection
+      .get<ITypeApi>(`/type/${id}`)
+      .then(({ data }) => data)
+
+    const pokemonResult = await axios.all(
+      pokemons.map(({ pokemon: { name } }) => this.getOne(name))
+    )
+
+    return pokemonResult.map(pokemon => new ResultPokemon(pokemon))
   }
 }
 

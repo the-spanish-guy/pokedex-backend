@@ -1,4 +1,5 @@
-import { IAbilities, IResult, IStats } from './PokemonApiInterface'
+import { IAbilities, IResult, ITypes } from './PokemonApiInterface'
+import { IImages } from './ResultPokemonApiInterface'
 
 interface IEvYield {
   ['base_stat']: number
@@ -39,18 +40,30 @@ interface IOtherForms {
   pokemon: IResult
 }
 
+export interface IPokemonStats {
+  name: string
+  stat: number
+  min: number
+  max: number
+}
+
 export interface IPokemon {
+  id: number
+  name: string
   weight: string
   height: string
   abilities: IAbilities[]
   category: string
   gender: Array<string>
   weakness: Array<string>
+  images: IImages
+  color: string
+  types: ITypes[]
 
   training: ITraining
   breeding: IBreeding
-  ['base_stats']: IStats[]
-  type: IType[]
+  ['base_stats']: IPokemonStats[]
+  ['effective_type']: IType[]
   evolves: IEvolves[]
   ['other_forms']: IOtherForms[]
 }
