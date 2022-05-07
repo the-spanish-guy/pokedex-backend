@@ -132,7 +132,7 @@ const typesOfPokemon = [
   'FAIRY'
 ]
 
-export const getVulnarability = (
+export const getVulnerability = (
   types: ITypes[],
   returnAll = false
 ):
@@ -243,7 +243,7 @@ const arrContentNumber = (arr: IType[]) => {
   return res
 }
 
-export const getEffectivetypeByType = (types: ITypes[]) => {
+export const getEffectiveTypeByType = (types: ITypes[]) => {
   const type1: string = types[0].type.name.toUpperCase()
   let type2: string | null = null
 
