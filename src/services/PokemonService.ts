@@ -17,11 +17,11 @@ import { formatHeight, formatWeight } from '../utils/MeasurementsUtils'
 import { IPokemonGender } from '../interfaces/PokemonGenderApiInterface'
 import {
   getCatchRate,
-  getEffectivetypeByType,
+  getEffectiveTypeByType,
   getEvolves,
   getGenderRate,
   getImgByUrl,
-  getVulnarability,
+  getVulnerability,
   LEVEL_POKEMON,
   MAX_EV,
   MAX_IV,
@@ -171,12 +171,9 @@ class PokemonService {
 
   public async getOne(id: string): Promise<ResultPokemon> {
     const data = await this.getSpecificPokemon(id)
-    console.log({ data })
     const { flavor_text_entries: flavorTextEntries } = await this.getSpecie(
       String(data.species.name)
     )
-
-    console.log('depois de get specie')
     const result: ResultPokemon = {
       id: data.id,
       name: data.name,
@@ -198,6 +195,7 @@ class PokemonService {
       weight,
       height,
       sprites,
+      species,
       abilities,
       base_experience: baseExperience
     } = await this.getSpecificPokemon(idOrName)
@@ -211,13 +209,13 @@ class PokemonService {
       egg_groups: eggGroups,
       evolution_chain: evolutionChain,
       gender_rate: genderRate
-    } = await this.getSpecie(idOrName)
+    } = await this.getSpecie(species.name)
 
     const chain = evolutionChain.url.replace(/\D/g, '').substring(1)
     const evolutionsApi = await this.getEvolutions(Number(chain))
     const evolves = getEvolves(evolutionsApi.chain)
 
-    const typeEffective: IType[] = getEffectivetypeByType(types)
+    const typeEffective: IType[] = getEffectiveTypeByType(types)
 
     const [
       { pokemon_species_details: male },
@@ -237,10 +235,10 @@ class PokemonService {
       if (pokeName.name === name) genders.push('female')
     })
     genderless.forEach(({ pokemon_species: pokeName }) => {
-      if (pokeName.name === name) genders.push('unknow')
+      if (pokeName.name === name) genders.push('unknown')
     })
 
-    const weakness = getVulnarability(types) as Array<string>
+    const weakness = getVulnerability(types) as Array<string>
     const otherForms = varieties.map(varietie => ({
       ...varietie,
       pokemon: {
