@@ -280,10 +280,12 @@ export const getImgByUrl = (url: string) => {
 
 export const getEvolves = (chain: IChain): IEvolves[] => {
   const getMinLevel = (details: IEvolutionDetails[]) =>
-    details.filter(l => l.min_level)
+    details.filter(l => Number(l.min_level))
+
   const getIdForImg = (url: string) => {
     return getImgByUrl(url)
   }
+
   const result = [
     {
       name: chain.species.name,
@@ -291,6 +293,7 @@ export const getEvolves = (chain: IChain): IEvolves[] => {
       url: getIdForImg(chain.species.url)
     }
   ]
+
   const evolves = (evolvesTo: IEvolvesTo[]) => {
     evolvesTo.forEach(
       ({
@@ -298,7 +301,11 @@ export const getEvolves = (chain: IChain): IEvolves[] => {
         species: { name, url },
         evolves_to: evolvesTo
       }) => {
-        const [{ min_level: minLevel }] = getMinLevel(evolutionDetails)
+        const minLevelDetails = getMinLevel(evolutionDetails)
+        const minLevel = minLevelDetails.length
+          ? minLevelDetails[0].min_level
+          : 0
+
         result.push({
           name: name,
           min_level: minLevel,
