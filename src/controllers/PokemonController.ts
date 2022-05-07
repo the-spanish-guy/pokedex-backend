@@ -19,6 +19,16 @@ class PokemonController {
     const pokemon = await PokemonService.show(id)
     return response.json(pokemon)
   }
+
+  public async getByType(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
+    const { id } = request.params
+    const pokemons = await PokemonService.getByType(id)
+
+    return response.json(pokemons)
+  }
 }
 
 export default new PokemonController()
