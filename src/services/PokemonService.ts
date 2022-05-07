@@ -1,19 +1,20 @@
+import axios from 'axios'
+
+import { getColor } from '../utils/ColorUtils'
 import { pokemonConnection } from './HttpService'
 import {
   IImages,
   IResultPokemon,
   ResultPokemon
 } from '../interfaces/ResultPokemonApiInterface'
-import { IPokemonApi, ISprite, IStats } from '../interfaces/PokemonApiInterface'
-import { getColor } from '../utils/ColorUtils'
 import {
   IFlavorTextEntries,
   IGenera,
   IPokemonSpecieApi
 } from '../interfaces/PokemonSpecieApiInterface'
-import { IPokemon, IPokemonStats, IType } from '../interfaces/PokemonInterface'
-import { IPokemonGender } from '../interfaces/PokemonGenderApiInterface'
+import { ITypeApi } from '@interfaces/TypeApiApiInterface'
 import { formatHeight, formatWeight } from '../utils/MeasurementsUtils'
+import { IPokemonGender } from '../interfaces/PokemonGenderApiInterface'
 import {
   getCatchRate,
   getEffectivetypeByType,
@@ -29,6 +30,8 @@ import {
   POKEMON_NATURE
 } from '../utils/PokemonUtils'
 import { IEvolutionChainApi } from '../interfaces/PokemonEvolutionChainApi'
+import { IPokemon, IPokemonStats, IType } from '../interfaces/PokemonInterface'
+import { IPokemonApi, ISprite, IStats } from '../interfaces/PokemonApiInterface'
 
 class PokemonService {
   private getImages({
@@ -277,6 +280,18 @@ class PokemonService {
       effective_type: typeEffective,
       evolves
     }
+  }
+
+  public async getByType(id: string): Promise<ResultPokemon[]> {
+    const { pokemon: pokemons } = await pokemonConnection
+      .get<ITypeApi>(`/type/${id}`)
+      .then(({ data }) => data)
+
+    const pokemonResult = await axios.all(
+      pokemons.map(({ pokemon: { name } }) => this.getOne(name))
+    )
+
+    return pokemonResult.map(pokemon => new ResultPokemon(pokemon))
   }
 }
 
