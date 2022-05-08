@@ -7,8 +7,14 @@ class PokemonController {
     const { id, offset } = request.query
 
     if (id) {
-      const pokemon = await PokemonService.getOne(id as string)
-      return response.json([pokemon])
+      return await PokemonService.getOne(id as string)
+        .then(pokemon => response.json([pokemon]))
+        .catch((error: AxiosError) => {
+          const statusCode = error.response.status
+          return response
+            .status(statusCode)
+            .json({ msg: error.response.data, statusCode })
+        })
     }
 
     const pokemons = await PokemonService.index(Number(offset))
