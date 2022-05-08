@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios'
 import { Request, Response } from 'express'
 import PokemonService from '../services/PokemonService'
 
@@ -16,8 +17,14 @@ class PokemonController {
 
   public async show(request: Request, response: Response): Promise<Response> {
     const { id } = request.params
-    const pokemon = await PokemonService.show(id)
-    return response.json(pokemon)
+    return await PokemonService.show(id)
+      .then(pokemon => response.json(pokemon))
+      .catch((error: AxiosError) => {
+        const statusCode = error.response.status
+        return response
+          .status(statusCode)
+          .json({ msg: error.response.data, statusCode })
+      })
   }
 
   public async getByType(
@@ -25,9 +32,15 @@ class PokemonController {
     response: Response
   ): Promise<Response> {
     const { id } = request.params
-    const pokemons = await PokemonService.getByType(id)
+    return await PokemonService.getByType(id)
+      .then(pokemons => response.json(pokemons))
+      .catch((error: AxiosError) => {
+        const statusCode = error.response.status
 
-    return response.json(pokemons)
+        return response
+          .status(statusCode)
+          .json({ msg: 'Informed type does not exist', statusCode })
+      })
   }
 }
 
